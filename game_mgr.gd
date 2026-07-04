@@ -35,7 +35,7 @@ func set_score(score: int):
 	score_changed.emit(score)
 
 func start_game():
-	score = 0
+	set_score(0)
 	is_game_running = true
 	game_start.emit()
 

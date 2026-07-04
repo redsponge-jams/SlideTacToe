@@ -6,6 +6,8 @@ class_name Obstacle
 @export var speed: float = 50.0
 @export var is_tutorial: bool = false;
 
+var checked = false;
+
 var THRESHOLD = 20 + (28 * 2) + (28 / 2)
 var HINTS = [
 	[[1, 0], [2, 0], [0, 1, 2, 3, 4], [1, 0, 0]], # row
@@ -72,8 +74,9 @@ func _physics_process(delta: float) -> void:
 	position.x -= speed * delta
 	
 	position.x = max(position.x, THRESHOLD)
-	if position.x <= THRESHOLD and speed > 0:
+	if position.x <= THRESHOLD and speed > 0 and not checked:
 		emit_signal("check_me", self, expected_mark(), expected_row)
+		checked = true
 		speed = 0
 		#queue_free()
 

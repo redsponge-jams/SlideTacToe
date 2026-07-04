@@ -29,6 +29,8 @@ func spawn_tutorial_obstacle():
 func spawn_obstacle():
 	var obstacle: Obstacle = obstacle_scene.instantiate()
 	obstacle.expected_row = randi_range(0, 4)
+	while obstacle.expected_row == player.row:
+		obstacle.expected_row = randi_range(0, 4)
 	obstacle.position.x = 320 + (28 * 2)
 	obstacle.speed += game_manager.score * 2
 	obstacle.check_me.connect(game_manager._on_obstacle_check_me)
@@ -46,7 +48,8 @@ func slide_leftmost_obstacle():
 
 
 func _on_spawn_timer_timeout() -> void:
-	spawn_obstacle()
+	pass
+	# spawn_obstacle()
 
 
 func _on_game_manager_game_start() -> void:
@@ -56,4 +59,6 @@ func _on_game_manager_game_start() -> void:
 
 func _on_game_manager_game_over() -> void:
 	$SpawnTimer.stop()
+	for child in obstacle_holder.get_children():
+		child.queue_free()
 	spawn_tutorial_obstacle()
