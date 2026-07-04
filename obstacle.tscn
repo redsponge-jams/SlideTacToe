@@ -1,0 +1,82 @@
+[gd_scene format=3 uid="uid://d1r3sy2bvdaw7"]
+
+[ext_resource type="Script" uid="uid://b0tyf3s1qfowg" path="res://obstacle.gd" id="1_sl1jc"]
+[ext_resource type="Texture2D" uid="uid://djql1qdcwe3it" path="res://o.png" id="2_aubd6"]
+[ext_resource type="Texture2D" uid="uid://ckduq2p0uy0us" path="res://x_to_o_5.png" id="3_tyhon"]
+[ext_resource type="Texture2D" uid="uid://maffnotuixvu" path="res://x_to_o_1.png" id="4_fvdov"]
+[ext_resource type="AudioStream" uid="uid://begmmqu8f153f" path="res://sketch-line.ogg" id="5_c2epm"]
+[ext_resource type="Script" uid="uid://b6hb5m4w7wyjp" path="res://pitched_play.gd" id="6_snuee"]
+[ext_resource type="Texture2D" uid="uid://ddl3l2k0xdhfn" path="res://line_horiz_1.png" id="7_o5xj2"]
+[ext_resource type="Texture2D" uid="uid://6sdf5uc7dkbc" path="res://line_horiz_2.png" id="8_m2ml2"]
+[ext_resource type="Texture2D" uid="uid://no7hgpmq61e1" path="res://line_horiz_3.png" id="9_njwqr"]
+[ext_resource type="Texture2D" uid="uid://b8k4wa3dg3bij" path="res://line_horiz_4.png" id="10_6iomf"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o84xf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_tyhon")
+}],
+"loop": 1,
+"name": &"o",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_fvdov")
+}],
+"loop": 1,
+"name": &"x",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_o7sds"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_o5xj2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_m2ml2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_njwqr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_6iomf")
+}],
+"loop": 0,
+"name": &"horiz",
+"speed": 20.0
+}]
+
+[node name="Obstacle" type="Node2D" unique_id=733781565]
+script = ExtResource("1_sl1jc")
+
+[node name="O" type="Sprite2D" parent="." unique_id=1484130021]
+visible = false
+self_modulate = Color(1, 1, 1, 0.32941177)
+texture = ExtResource("2_aubd6")
+
+[node name="Hint1" type="Node2D" parent="." unique_id=1947503051]
+
+[node name="Tex" type="AnimatedSprite2D" parent="Hint1" unique_id=767618245]
+sprite_frames = SubResource("SpriteFrames_o84xf")
+animation = &"x"
+
+[node name="Hint2" type="Node2D" parent="." unique_id=553049845]
+
+[node name="Tex" type="AnimatedSprite2D" parent="Hint2" unique_id=1525870609]
+sprite_frames = SubResource("SpriteFrames_o84xf")
+animation = &"o"
+
+[node name="CompletionSound" type="AudioStreamPlayer2D" parent="." unique_id=1325958055]
+stream = ExtResource("5_c2epm")
+script = ExtResource("6_snuee")
+
+[node name="Line" type="Node2D" parent="." unique_id=506397043]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Line" unique_id=360165913]
+visible = false
+sprite_frames = SubResource("SpriteFrames_o7sds")
+animation = &"horiz"

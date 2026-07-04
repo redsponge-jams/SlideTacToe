@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://d1r3sy2bvdaw7"]
+
+[ext_resource type="Script" uid="uid://b0tyf3s1qfowg" path="res://obstacle.gd" id="1_sl1jc"]
+[ext_resource type="Texture2D" uid="uid://djql1qdcwe3it" path="res://o.png" id="2_aubd6"]
+
+[node name="Obstacle" type="Node2D" unique_id=733781565]
+script = ExtResource("1_sl1jc")
+
+[node name="O" type="Sprite2D" parent="." unique_id=1484130021]
+self_modulate = Color(1, 1, 1, 0.32941177)
+texture = ExtResource("2_aubd6")
+
+[node name="Hint1" type="Node2D" parent="." unique_id=1947503051]
+
+[node name="Tex" type="Sprite2D" parent="Hint1" unique_id=1580744916]
+texture = ExtResource("2_aubd6")
+
+[node name="Hint2" type="Node2D" parent="." unique_id=553049845]
+
+[node name="Tex" type="Sprite2D" parent="Hint2" unique_id=1779536829]
+texture = ExtResource("2_aubd6")

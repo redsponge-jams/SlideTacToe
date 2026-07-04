@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://ccjwj4f5aptql"]
+
+[ext_resource type="Texture2D" uid="uid://bgcmpm8lpewmm" path="res://board.png" id="1_80nbo"]
+[ext_resource type="PackedScene" uid="uid://s7p26xmnws23" path="res://player.tscn" id="2_e2o6t"]
+[ext_resource type="Script" uid="uid://civh4ksphrlfj" path="res://game_mgr.gd" id="4_fc0e3"]
+[ext_resource type="Script" uid="uid://5didu4jflhxw" path="res://spawner.gd" id="5_7jktm"]
+[ext_resource type="Script" uid="uid://2cy81a8e152i" path="res://score_display.gd" id="5_ryrav"]
+[ext_resource type="Script" uid="uid://bgf60tilmynm3" path="res://slide.gd" id="5_vef74"]
+[ext_resource type="PackedScene" uid="uid://bymd2p73b6hfl" path="res://title.tscn" id="6_ryrav"]
+[ext_resource type="Script" uid="uid://ca7d7dkob8jkt" path="res://title.gd" id="7_eow3j"]
+[ext_resource type="Texture2D" uid="uid://b2xopnkgm80pf" path="res://score.png" id="7_hve3p"]
+[ext_resource type="Texture2D" uid="uid://cxxp6cthly2ej" path="res://press_to_start.png" id="8_j5wjh"]
+[ext_resource type="AudioStream" uid="uid://b5i6ixvjikba2" path="res://lose.ogg" id="11_mfdv2"]
+[ext_resource type="Script" uid="uid://ccmhoi2knesis" path="res://loss.gd" id="12_iotsf"]
+
+[node name="Game" type="Node2D" unique_id=1640185266]
+
+[node name="Board" type="Sprite2D" parent="." unique_id=1648264507]
+position = Vector2(161, 91)
+texture = ExtResource("1_80nbo")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=618733293]
+position = Vector2(160, 90)
+
+[node name="Player" parent="." unique_id=127510998 instance=ExtResource("2_e2o6t")]
+position = Vector2(90, 91)
+row = 2
+
+[node name="GameManager" type="Node" parent="." unique_id=1281809941 node_paths=PackedStringArray("player")]
+script = ExtResource("4_fc0e3")
+player = NodePath("../Player")
+
+[node name="ObstacleManager" type="Node" parent="." unique_id=779060039 node_paths=PackedStringArray("obstacle_holder", "game_manager", "player")]
+script = ExtResource("5_7jktm")
+obstacle_holder = NodePath("../Obstacles")
+game_manager = NodePath("../GameManager")
+player = NodePath("../Player")
+
+[node name="SpawnTimer" type="Timer" parent="ObstacleManager" unique_id=1084969564]
+wait_time = 5.0
+
+[node name="Obstacles" type="Node" parent="." unique_id=2071707850]
+
+[node name="Score" type="Node2D" parent="." unique_id=1243987910]
+position = Vector2(236, 159)
+
+[node name="ScoreDisplay" type="Label" parent="Score" unique_id=609073376]
+offset_left = 51.0
+offset_right = 61.0
+offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.16078432, 0.14117648, 0.09411765, 1)
+text = " 0"
+script = ExtResource("5_ryrav")
+
+[node name="Sprite2D" type="Sprite2D" parent="Score" unique_id=1736939738]
+position = Vector2(23, 11)
+texture = ExtResource("7_hve3p")
+
+[node name="Title" parent="." unique_id=1300848455 instance=ExtResource("6_ryrav")]
+position = Vector2(161, 11)
+script = ExtResource("7_eow3j")
+titlePosition = Vector2(161, 11)
+
+[node name="PressToStart" type="Node2D" parent="." unique_id=838068677]
+position = Vector2(96, 169)
+script = ExtResource("5_vef74")
+shownPosition = Vector2(96, 169)
+hiddenPosition = Vector2(-80, 169)
+
+[node name="Sprite2D" type="Sprite2D" parent="PressToStart" unique_id=513881325]
+position = Vector2(-22, 0)
+texture = ExtResource("8_j5wjh")
+
+[node name="Loss" type="AudioStreamPlayer2D" parent="." unique_id=55297026]
+stream = ExtResource("11_mfdv2")
+script = ExtResource("12_iotsf")
+
+[connection signal="game_over" from="GameManager" to="ObstacleManager" method="_on_game_manager_game_over"]
+[connection signal="game_over" from="GameManager" to="Score" method="animate_out"]
+[connection signal="game_over" from="GameManager" to="Score/ScoreDisplay" method="_on_game_manager_game_over"]
+[connection signal="game_over" from="GameManager" to="Title" method="_on_game_manager_game_over"]
+[connection signal="game_over" from="GameManager" to="PressToStart" method="animate_in"]
+[connection signal="game_over" from="GameManager" to="Loss" method="_on_game_manager_game_over"]
+[connection signal="game_start" from="GameManager" to="ObstacleManager" method="_on_game_manager_game_start"]
+[connection signal="game_start" from="GameManager" to="Score" method="animate_in"]
+[connection signal="game_start" from="GameManager" to="Score/ScoreDisplay" method="_on_game_manager_game_start"]
+[connection signal="game_start" from="GameManager" to="Title" method="_on_game_manager_game_start"]
+[connection signal="game_start" from="GameManager" to="PressToStart" method="animate_out"]
+[connection signal="score_changed" from="GameManager" to="Score/ScoreDisplay" method="_on_game_mgr_score_changed"]
+[connection signal="timeout" from="ObstacleManager/SpawnTimer" to="ObstacleManager" method="_on_spawn_timer_timeout"]
